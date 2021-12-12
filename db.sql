@@ -1,0 +1,32 @@
+CREATE TABLE Accounts (
+  Id INT(64) UNSIGNED PRIMARY KEY,
+  Owner VARCHAR(60) NOT NULL,
+  StartingDebt INT UNSIGNED,
+  CreatedAt DATETIME
+);
+
+CREATE TABLE Users (
+  Id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  Name VARCHAR(60) NOT NULL,
+  AccountId INT(64) UNSIGNED,
+  CreatedAt DATETIME,
+  FOREIGN KEY (AccountId) REFERENCES Accounts(Id)
+);
+
+CREATE TABLE Bills (
+  Id INT UNSIGNED PRIMARY KEY,
+  Amount DECIMAL,
+  AccountId INT(64) UNSIGNED,
+  Month INT(8),
+  CreatedAt DATETIME,
+  FOREIGN KEY (AccountId) REFERENCES Accounts(Id)
+);
+
+CREATE TABLE Payments (
+  Id INT UNSIGNED PRIMARY KEY,
+  Amount INT(64),
+  Month INT(8),
+  CreatedAt DATETIME,
+  UserId INT UNSIGNED,
+  FOREIGN KEY (UserId) REFERENCES Users(Id)
+);

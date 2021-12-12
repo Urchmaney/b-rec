@@ -1,0 +1,19 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: b_rec
+    ports:
+      - 3000:3000
+    volumes:
+      - $PWD:/usr/local/go/src/b-rec
+  db:
+    container_name: b_rec_db
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "b_rec"
+    volumes:
+      - /home/urchmaney/Documents/Development/b-rec:/docker-entrypoint-initdb.d
