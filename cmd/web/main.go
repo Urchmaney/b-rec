@@ -6,7 +6,12 @@ import (
   "database/sql"
   "flag"
   _ "github.com/go-sql-driver/mysql"
+  "b-rec/pkg/models/mysql"
 )
+
+type application struct {
+  user_dao mysql.UserDAO
+}
 
 func main() {
   dsn := flag.String("dsn", "root:root@tcp(db)/b_rec?parseTime=true", "MySQL data source name")
@@ -17,6 +22,8 @@ func main() {
     log.Println(err)
     return
   }
+
+  // app := application{ user_dao: mysql.UserDAO{ DB: db } }
 
   mux := http.NewServeMux()
   mux.HandleFunc("/", home)
