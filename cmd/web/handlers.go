@@ -6,9 +6,12 @@ import(
   "b-rec/pkg/models/mysql"
 )
 
-func home(w http.ResponseWriter, r *http.Request) {
-  ua := mysql.UserDAO{}
-  data, _ := ua.GetUser()
+type UserHandler struct {
+  userService mysql.UserDAO
+}
+
+func(usr_handler UserHandler) home(w http.ResponseWriter, r *http.Request) {
+  data, _ := usr_handler.userService.GetUser()
   w.Header().Set("Content-Type", "application/json")
   json.NewEncoder(w).Encode(data)
 }
