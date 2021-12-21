@@ -8,6 +8,7 @@ import (
   _ "github.com/go-sql-driver/mysql"
   "b-rec/pkg/models/mysql"
   "github.com/go-chi/chi/v5"
+  "b-rec/pkg/handlers"
 )
 
 type application struct {
@@ -27,15 +28,16 @@ func main() {
   // app := application{  }
  
   user_dao := mysql.UserDAO{ DB: db }
-  user_handler := UserHandler{ userService: user_dao }
+  user_handler := handlers.UserHandler{ UserService: user_dao }
 
   r := chi.NewRouter()
   r.Route("/users", func(r chi.Router) {
-    r.Get("/", user_handler.home)
+    r.Get("/", user_handler.GetAllUsers)
+    r.Post("/", user_handler.CreateUser)
   })
 
   r.Route("/accounts", func(r chi.Router) {
-    r.Get("/", user_handler.home)
+    r.Get("/", user_handler.GetAllUsers)
     r.Get("/{account_slug:[1-z-]+}", func (w http.ResponseWriter, r *http.Request) {
       slug := chi.URLParam(r, "account_slug")
       w.Write([]byte(slug))
