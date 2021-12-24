@@ -1,7 +1,6 @@
 package handlers
 
 import (
-  "time"
   "log"
   "net/http"
   "encoding/json"
@@ -20,12 +19,13 @@ func (handler UserHandler) CreateUser(rw http.ResponseWriter, req *http.Request)
     log.Println(code_err)
     return
   }
-  user.CreatedAt = time.Now()
-  
-  if _, err := handler.UserService.CreateUser(user); err != nil {
+  id, err := handler.UserService.CreateUser(user)
+
+  if err != nil {
     log.Println(err)
     return
   }
+  user.ID = id
   rw.Header().Set("Content-Type", "application/json")
   json.NewEncoder(rw).Encode(user)
 }

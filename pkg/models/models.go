@@ -12,9 +12,9 @@ type Account struct {
 }
 
 type User struct {
-  ID uint
+  ID int64
   Name string
-  AccountId uint64
+  AccountId int64
   CreatedAt time.Time
 }
 
