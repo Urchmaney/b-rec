@@ -1,7 +1,7 @@
 CREATE TABLE Accounts (
   Id INT(64) UNSIGNED PRIMARY KEY,
   OwnerFullName VARCHAR(60) NOT NULL,
-  PasswordHash VARCHAR NOT NULL,
+  Password VARCHAR NOT NULL,
   Email VARCHAR(60) NOT NULL,
   StartingDebt INT UNSIGNED,
   CreatedAt DATETIME

@@ -8,6 +8,7 @@ import (
   _ "github.com/go-sql-driver/mysql"
   "b-rec/pkg/models/mysql"
   "github.com/go-chi/chi/v5"
+  "b-rec/pkg/authenticator"
   "b-rec/pkg/handlers"
 )
 
@@ -30,6 +31,10 @@ func main() {
   user_dao := mysql.UserDAO{ DB: db }
   user_handler := handlers.UserHandler{ UserService: user_dao }
 
+  account_dao := mysql.AccountDAO{ DB: db }
+  authenticator := authenticator.AuthenticationService{}
+  accounts_handler := handlers.AccountHandler { AccountService: account_dao, AuthenticationService: authenticator }
+
   r := chi.NewRouter()
   r.Route("/users", func(r chi.Router) {
     r.Get("/", user_handler.GetAllUsers)
@@ -37,11 +42,8 @@ func main() {
   })
 
   r.Route("/accounts", func(r chi.Router) {
-    r.Get("/", user_handler.GetAllUsers)
-    r.Get("/{account_slug:[1-z-]+}", func (w http.ResponseWriter, r *http.Request) {
-      slug := chi.URLParam(r, "account_slug")
-      w.Write([]byte(slug))
-    })
+    r.Post("/signup", accounts_handler.SignUp)
+    r.Post("/login", accounts_handler.Login)
   })
   // mux := http.NewServeMux()
   // mux.HandleFunc("/users", )

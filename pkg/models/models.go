@@ -7,7 +7,7 @@ import (
 type Account struct {
   ID uint64
   OwnerFullName string
-  PasswordHash string
+  Password string
   Email string
   StartingDebt int
   CreatedAt time.Time

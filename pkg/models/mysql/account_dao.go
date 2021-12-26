@@ -33,3 +33,13 @@ func (acc_dao AccountDAO) GetAccount(id int64) (models.Account, error) {
   }
   return account, nil
 }
+
+func (acc_dao AccountDAO) GetAccountByEmail(email string) (models.Account, error) {
+  var account models.Account
+  row := acc_dao.DB.QueryRow("SELECT FROM Accounts WHERE email = ?", email)
+  if err := row.Scan(&account.ID, &account.OwnerFullName, &account.PasswordHash, &account.Email, &account.StartingDebt); err != nil {
+    fmt.Println(err)
+    return nil, err
+  }
+  return account, nil
+}
