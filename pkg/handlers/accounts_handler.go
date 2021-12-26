@@ -1,7 +1,8 @@
-package handlers
+ package handlers
 
 import (
-  "fmt"
+  "net/http"
+  "log"
   "encoding/json"
   "b-rec/pkg/authenticator"
   "b-rec/pkg/models/mysql"
@@ -27,16 +28,16 @@ func(handler AccountHandler) SignUp(rw http.ResponseWriter, req *http.Request) {
   }
   hashPwd, err := handler.AuthenticationService.HashPassword(account.Password)
   if err != nil {
-    log.Println(code_err)
+    log.Println(err)
     return
   }
   account.Password = hashPwd
   id, a_err := handler.AccountService.CreateAccount(account)
   if a_err != nil {
-    log.Println(code_err)
+    log.Println(err)
     return
   }
-  account.ID = id
+  account.ID = int64(id)
   rw.Header().Set("Content-Type", "application/json")
   json.NewEncoder(rw).Encode(account)
 }
@@ -53,7 +54,7 @@ func(handler AccountHandler) Login(rw http.ResponseWriter, req *http.Request) {
     log.Println(err)
     return
   }
-  validPwd := handler.AuthenticationService.CheckPasswordHash(account.Password, details.Password)
+  validPwd := handler.AuthenticationService.CheckPasswordHash(details.Password, account.Password)
   if !validPwd {
     log.Println("Wrong Details Provided")
     return

@@ -5,7 +5,7 @@ import (
 )
 
 type Account struct {
-  ID uint64
+  ID int64
   OwnerFullName string
   Password string
   Email string
