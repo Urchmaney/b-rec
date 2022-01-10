@@ -21,7 +21,8 @@ type User struct {
 }
 
 type Bill struct {
-  ID uint
+  ID int64
+  AccountId int64
   Amount float64
   Month uint8
   CreatedAt time.Time
