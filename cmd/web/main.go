@@ -35,6 +35,9 @@ func main() {
   authenticator := authenticator.AuthenticationService{}
   accounts_handler := handlers.AccountHandler { AccountService: account_dao, AuthenticationService: authenticator }
 
+  bill_service := mysql.BillService{ DB: db }
+  bill_handler := handlers.BillHandler{ BillService: bill_service }
+
   r := chi.NewRouter()
   r.Route("/users", func(r chi.Router) {
     r.Get("/", user_handler.GetAllUsers)
@@ -44,6 +47,10 @@ func main() {
   r.Route("/accounts", func(r chi.Router) {
     r.Post("/signup", accounts_handler.SignUp)
     r.Post("/login", accounts_handler.Login)
+  })
+
+  r.Route("/bills", func(r chi.Router) {
+    r.Post("/", bill_handler.CreateBill)
   })
   // mux := http.NewServeMux()
   // mux.HandleFunc("/users", )
