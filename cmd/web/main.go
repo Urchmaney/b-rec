@@ -38,6 +38,9 @@ func main() {
   bill_service := mysql.BillService{ DB: db }
   bill_handler := handlers.BillHandler{ BillService: bill_service }
 
+  payment_service := mysql.PaymentService{ DB: db }
+  payment_handler := handlers.PaymentHandler{ PaymentService: payment_service }
+
   r := chi.NewRouter()
   r.Route("/users", func(r chi.Router) {
     r.Get("/", user_handler.GetAllUsers)
@@ -51,6 +54,10 @@ func main() {
 
   r.Route("/bills", func(r chi.Router) {
     r.Post("/", bill_handler.CreateBill)
+  })
+
+  r.Route("/payments", func(r chi.Router) {
+    r.Post("/", payment_handler.AddPayments)
   })
   // mux := http.NewServeMux()
   // mux.HandleFunc("/users", )
